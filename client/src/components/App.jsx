@@ -1,25 +1,30 @@
 import React from 'react';
 import Movies from '../../exampleMovieData';
 import Movie from './Movie.jsx';
-import SearchBar from './Searchbar.jsx'
+import SearchBar from './Searchbar.jsx';
+import AddMovie from './Addmovie.jsx';
 
 class App extends React.Component {
   constructor(){
     super();
     this.state = {
-      movies: [
-        {title: 'Mean Girls'},
-        {title: 'Hackers'},
-        {title: 'The Grey'},
-        {title: 'Sunshine'},
-        {title: 'Ex Machina'},
-      ]
+      movies: Movies
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleAdding = this.handleAdding.bind(this);
   }
 
   handleSubmit(event) {
+    event.preventDefault();
+  }
+
+  handleAdding(event) {
+    console.log(this.state);
+    console.log(document.getElementById('bleh').value);
+    var currentState = this.state;
+    currentState.movies.push({title: document.getElementById('bleh').value});
+    this.setState(currentState);
     event.preventDefault();
   }
 
@@ -33,13 +38,7 @@ class App extends React.Component {
   }
 
   handleChange(event) {
-    var array = [
-      {title: 'Mean Girls'},
-      {title: 'Hackers'},
-      {title: 'The Grey'},
-      {title: 'Sunshine'},
-      {title: 'Ex Machina'}
-    ];
+    var array = Movies;
     var value = event.target.value;
     var newArr = array.map((ele) => {
       ele = ele.title;
@@ -50,7 +49,12 @@ class App extends React.Component {
     var ultimateMovieList = this.filterArray(value, newArr);
     console.log(newArr)
     console.log(ultimateMovieList);
-    this.setState({movies: ultimateMovieList});
+    if (ultimateMovieList.length > 0) {
+      this.setState({movies: ultimateMovieList});
+    } else {
+      this.setState({movies: [{title: 'No movie by this name found.'}]});
+    }
+    
     console.log(this.state);
     //  if (newArr.includes(value)) {
     //   this.setState({movies: [{title: event.target.value}]});
@@ -66,9 +70,14 @@ class App extends React.Component {
           <h1>Movie List</h1>
           <h2>
             {
-              <SearchBar handleSearch={this.handleChange} handleGo={this.handleSubmit}/>
+              <AddMovie handleAdd={this.handleAdding}/>
             }
           </h2>
+          <h3>
+            {
+              <SearchBar handleSearch={this.handleChange} handleGo={this.handleSubmit}/>
+            }
+          </h3>
           <ul>
             {
               this.state.movies.map((ele, i) => {
