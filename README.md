@@ -1,3 +1,5 @@
+WEBPACK REQUIRES IMPORT REACT ON ALL COMPONENTS!!!!!
+
 0. git init npm init -y
 1. Copy three files on the webpack main page (src/index.js, src/bar.js, webpack.config.js)
 2. ***Install webpack npm install webpack
